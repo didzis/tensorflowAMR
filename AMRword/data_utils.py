@@ -110,7 +110,7 @@ def basic_tokenizer(sentence):
 
 
 def create_vocabulary(vocabulary_path, data_path, max_vocabulary_size,
-                      tokenizer=None, normalize_digits=True):
+                      tokenizer=None, normalize_digits=False):
   """Create vocabulary file (if it does not exist yet) from data file.
 
   Data file is assumed to contain one sentence per line. Each sentence is
@@ -182,7 +182,7 @@ def initialize_vocabulary(vocabulary_path):
 
 
 def sentence_to_token_ids(sentence, vocabulary,
-                          tokenizer=None, normalize_digits=True):
+                          tokenizer=None, normalize_digits=False):
   """Convert a string to list of integers representing token-ids.
 
   For example, a sentence "I have a dog" may become tokenized into
@@ -210,7 +210,7 @@ def sentence_to_token_ids(sentence, vocabulary,
 
 
 def data_to_token_ids(data_path, target_path, vocabulary_path,
-                      tokenizer=None, normalize_digits=True):
+                      tokenizer=None, normalize_digits=False):
   """Tokenize data file and turn into token-ids using given vocabulary file.
 
   This function loads data line-by-line from data_path, calls the above

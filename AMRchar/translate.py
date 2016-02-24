@@ -43,8 +43,8 @@ import numpy as np
 from six.moves import xrange  # pylint: disable=redefined-builtin
 import tensorflow as tf
 
-from tensorflow.models.rnn.translate import data_utils
-from tensorflow.models.rnn.translate import seq2seq_model
+import data_utils
+import seq2seq_model
 from tensorflow.python.platform import gfile
 
 
@@ -74,7 +74,8 @@ FLAGS = tf.app.flags.FLAGS
 
 # We use a number of buckets and pad to the closest one for efficiency.
 # See seq2seq_model.Seq2SeqModel for details of how they work.
-_buckets = [(5, 10), (10, 15), (20, 25), (40, 50)]
+# _buckets = [(5, 10), (10, 15), (20, 25), (40, 50)]
+_buckets = [(480, 480)]
 
 
 def read_data(source_path, target_path, max_size=None):
@@ -225,7 +226,9 @@ def decode():
     sentence = sys.stdin.readline()
     while sentence:
       # Get token-ids for the input sentence.
-      token_ids = data_utils.sentence_to_token_ids(sentence, en_vocab)
+      token_idsgb = data_utils.sentence_to_token_ids(sentence, en_vocab)
+      # Truncate sentence to the maximum bucket size
+      token_ids = token_idsgb[0:479]
       # Which bucket does it belong to?
       bucket_id = min([b for b in xrange(len(_buckets))
                        if _buckets[b][0] > len(token_ids)])
