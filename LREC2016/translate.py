@@ -71,8 +71,8 @@ FLAGS = tf.app.flags.FLAGS
 
 # We use a number of buckets and pad to the closest one for efficiency.
 # See seq2seq_model.Seq2SeqModel for details of how they work.
-_buckets = [(5, 10), (10, 15), (20, 25), (40, 50)]
-
+# _buckets = [(5, 10), (10, 15), (20, 25), (40, 50)]
+_buckets = [(100,100)]
 
 def read_data(source_path, target_path, max_size=None):
   """Read data from source and target files and put into buckets.
@@ -198,7 +198,7 @@ def train():
           _, eval_loss, _ = model.step(sess, encoder_inputs, decoder_inputs,
                                        target_weights, bucket_id, True)
           eval_ppx = math.exp(eval_loss) if eval_loss < 300 else float('inf')
-          print("  eval: bucket %d perplexity %.2f" % (bucket_id, eval_ppx))
+          print("  eval: bucket99 %d perplexity %.2f" % (bucket_id, eval_ppx))
         sys.stdout.flush()
 
 
@@ -222,7 +222,8 @@ def decode():
     sentence = sys.stdin.readline()
     while sentence:
       # Get token-ids for the input sentence.
-      token_ids = data_utils.sentence_to_token_ids(sentence, en_vocab)
+      token_idsgb = data_utils.sentence_to_token_ids(sentence, en_vocab)
+      token_ids = token_idsgb[0:99]
       # Which bucket does it belong to?
       bucket_id = min([b for b in xrange(len(_buckets))
                        if _buckets[b][0] > len(token_ids)])
